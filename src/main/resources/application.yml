@@ -1,0 +1,32 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: payment-gateway
+
+# Bank simulator
+bank:
+  simulator:
+    url: http://localhost:8080
+    connect-timeout-ms: 5000
+    read-timeout-ms: 5000
+    max-retries: 1
+    retry-delay-ms: 1000
+
+# Payment configuration
+payment:
+  supported-currencies: USD,GBP,EUR
+
+# Logging
+logging:
+  level:
+    com.checkout.payment.gateway: DEBUG
+    org.springframework.web: INFO
+
+# Swagger/OpenAPI
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
