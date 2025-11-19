@@ -76,16 +76,18 @@ class PaymentIntegrationTest {
 
   @Test
   void shouldRejectInvalidPaymentWithBadRequest() throws Exception {
+    int currentYear = LocalDate.now().getYear();
     String expiredCardJson = """
             {
+                "idempotency_key": "%s",
                 "card_number": "%s",
                 "expiry_month": 1,
-                "expiry_year": 2020,
+                "expiry_year": %d,
                 "currency": "GBP",
                 "amount": %d,
                 "cvv": "123"
             }
-            """.formatted(VALID_CARD, VALID_AMOUNT);
+            """.formatted(IDEMPOTENCY_KEY, VALID_CARD, currentYear, VALID_AMOUNT);
 
     mockMvc.perform(post(PAYMENTS_ENDPOINT)
             .contentType(MediaType.APPLICATION_JSON)

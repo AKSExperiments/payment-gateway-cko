@@ -33,7 +33,7 @@ public class PostPaymentRequest {
 
   @JsonProperty("expiry_year")
   @NotNull(message = "Expiry year is required")
-  @Min(value = 2024, message = "Expiry year must be current year or later")
+  @Min(value = 2000, message = "Expiry year must be valid")
   private Integer expiryYear;
 
   @NotNull(message = "Currency is required")

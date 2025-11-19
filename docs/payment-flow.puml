@@ -1,0 +1,69 @@
+@startuml Payment Processing Flow
+
+skinparam backgroundColor white
+skinparam sequenceMessageAlign center
+
+actor Merchant
+participant Controller
+participant Service
+participant Repository
+participant Validator
+participant BankClient
+participant Bank
+
+== Process Payment ==
+
+Merchant -> Controller: POST /api/payments
+activate Controller
+
+Controller -> Service: processPayment(request)
+activate Service
+
+Service -> Repository: getByIdempotencyKey(key)
+activate Repository
+Repository --> Service: Optional<Payment>
+deactivate Repository
+
+alt Idempotency Cache Hit
+    Service --> Controller: PaymentResult.fromExisting()
+    Controller --> Merchant: 200/201 (cached response)
+else New Payment
+    Service -> Validator: validate(request)
+    activate Validator
+    Validator --> Service: List<errors>
+    deactivate Validator
+
+    alt Validation Failed
+        Service --> Controller: PaymentResult.rejected(errors)
+        Controller --> Merchant: 400 Bad Request
+    else Validation Passed
+        Service -> BankClient: processPayment(bankRequest)
+        activate BankClient
+
+        BankClient -> Bank: HTTP POST
+        activate Bank
+        Bank --> BankClient: BankResponse
+        deactivate Bank
+
+        BankClient --> Service: BankResponse
+        deactivate BankClient
+
+        Service -> Repository: addWithIdempotencyKey(payment, key)
+        activate Repository
+        Repository --> Service: void
+        deactivate Repository
+
+        alt Bank Authorized
+            Service --> Controller: PaymentResult.authorized()
+            Controller --> Merchant: 201 Created
+        else Bank Declined
+            Service --> Controller: PaymentResult.declined()
+            Controller --> Merchant: 200 OK
+        end
+    end
+end
+
+deactivate Service
+deactivate Controller
+
+@enduml
