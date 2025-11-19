@@ -19,7 +19,7 @@ public class Money {
   }
 
   public boolean isCurrencySupported() {
-    return currency != null && SUPPORTED_CURRENCIES.contains(currency.toUpperCase());
+    return SUPPORTED_CURRENCIES.contains(currency.toUpperCase());
   }
 
   public static Set<String> getSupportedCurrencies() {

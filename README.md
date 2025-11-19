@@ -203,5 +203,6 @@ These are deliberately out of scope for the assignment but represent natural evo
 - Eliminate repeated creation of domain objects (Card, Money) in service layer
 - Handle UUID collisions when generating payment IDs
 - Improve repository encapsulation while maintaining testability
+- Add unit tests for bank client retry logic
 
 ---

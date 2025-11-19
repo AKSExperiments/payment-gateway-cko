@@ -20,9 +20,6 @@ public class Card {
   String cvv;
 
   public String getLastFourDigits() {
-    if (number == null || number.length() < 4) {
-      return "****";
-    }
     return number.substring(number.length() - 4);
   }
 
