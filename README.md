@@ -199,5 +199,9 @@ These are deliberately out of scope for the assignment but represent natural evo
 - Store card tokens instead of raw numbers using a PCI-compliant vault
 - Send webhooks to merchants when payment status changes instead of requiring polling
 - Apply DDD patterns if the domain grows beyond a single Payment entity
+- Convert validation error strings to enums for better type safety
+- Eliminate repeated creation of domain objects (Card, Money) in service layer
+- Handle UUID collisions when generating payment IDs
+- Improve repository encapsulation while maintaining testability
 
 ---

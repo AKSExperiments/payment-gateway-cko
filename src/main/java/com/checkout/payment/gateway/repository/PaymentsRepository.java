@@ -46,7 +46,7 @@ public class PaymentsRepository {
 
     return get(paymentId);
   }
-
+  // TODO: Make it private but visible for testing
   public void clear() {
     payments.clear();
     idempotencyIndex.clear();
